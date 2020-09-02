@@ -9,8 +9,8 @@ public class IZWEncoding{
 	public ArrayList letArray;
 
 
-	//reading in the original file 
-	public ArayList letters (){
+	//reading in the letters from a txt file and puts them into an arraylist
+	public ArayList letterReader (){
 	String file1 = "encodingfile.txt";
 	FileReader fr = new FileReader ("encodingfile.txt");
 	BufferedReader br = new BufferedReader (fr);
