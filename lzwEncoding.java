@@ -3,23 +3,20 @@ import java.util.*;
 import java.io.*;
 public class lzwEncoding 
 {
-	
-
-	/*public static String process(int x, String prev)
+	public static HashMap<String,Integer> init(HashMap<String,Integer> table)
 	{
-		char current = (char)x;
-		if(prev.equals(""))
+		for(int a = 0; a < 126; a++)
 		{
-			prev = current;
-			return prev
+			char current = (char)a;
+			table.put(current+"",a);
 		}
-
-		if(table.contains(prev))
-	}*/
+		return table;
+	}
 
 	public static void main(String[] args) throws IOException
 	{
 		HashMap<String, Integer> table = new HashMap<String, Integer>();
+		init(table);
 		BufferedReader br = new BufferedReader(new FileReader("lzw.txt"));
 		int current = br.read();
 		String build = "";
