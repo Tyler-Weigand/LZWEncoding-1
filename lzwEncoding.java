@@ -1,25 +1,45 @@
 //submit the link to the github repo
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-
-public class IZWEncoding{
-	publc main 
-	//an arraylist of every letter in the txt file
-	public ArrayList letArray;
-
-
-	//reading in the letters from a txt file and puts them into an arraylist
-	public ArayList letterReader (){
-	String file1 = "encodingfile.txt";
-	FileReader fr = new FileReader ("encodingfile.txt");
-	BufferedReader br = new BufferedReader (fr);
-	for (int i = 0; i < file1.length (); i++ ){
-		letArray.add (file1.toString (i, i+1)); 
-	}
-
-	}
-
+import java.util.*;
+import java.io.*;
+public class lzwEncoding 
+{
 	
 
+	/*public static String process(int x, String prev)
+	{
+		char current = (char)x;
+		if(prev.equals(""))
+		{
+			prev = current;
+			return prev
+		}
+
+		if(table.contains(prev))
+	}*/
+
+	public static void main(String[] args) throws IOException
+	{
+		HashMap<String, Integer> table = new HashMap<String, Integer>();
+		BufferedReader br = new BufferedReader(new FileReader("lzw.txt"));
+		int current = br.read();
+		String build = "";
+		build += (char)current;
+		String encoding = "";
+		int num = 26;
+		while(current != -1)
+		{
+			current = br.read();
+			String temp = build + current;
+			System.out.println(table.containsKey(temp));
+			if(!table.containsKey(temp))
+			{
+				encoding += table.get(build);
+				table.put(temp, num);
+				num++;
+				build = "";
+			}
+			build += current;
+		}
+		System.out.println(encoding);
+	}
 }
