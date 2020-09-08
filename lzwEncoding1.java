@@ -3,13 +3,13 @@ import java.util.*;
 import java.io.*;
 public class lzwEncoding 
 {
-	public static HashMap<String,Character> init(HashMap<String,Character> table)
+	public static HashMap<String,Integer> init(HashMap<String,Integer> table)
 	{
 		for(int a = 0; a < 128; a++)
 		{
 			char current = (char)(a);
 			// (pattern (string) + corresponding ascii (char))
-			table.put(current+"",current);
+			table.put(current+"",a);
 		}
 		return table;
 	}
@@ -17,7 +17,7 @@ public class lzwEncoding
 	public static void main(String[] args) throws IOException
 	{
 		// the table containing the pattern and corresponding ascii - "a" -> 'a'
-		HashMap<String, Character> table = new HashMap<String, Character>();
+		HashMap<String, Integer> table = new HashMap<String, Integer>();
 		// holds the encoded message
 		StringBuilder encoding = new StringBuilder("");
 
@@ -43,11 +43,13 @@ public class lzwEncoding
 			if(!table.containsKey(temp))
 			{
 				// encode previous
+				if(encoding.length() > 0)
+					encoding.append(", ");
 				encoding.append(table.get(prev));
 
 				// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
-				if(num < 256)
-					table.put(temp, (char)num);
+				//if(num < 256)
+				table.put(temp, num);
 
 				num++;
 				// reset bc we've already encoded the previous
