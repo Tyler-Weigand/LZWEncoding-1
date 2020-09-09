@@ -14,7 +14,7 @@ public class lzwEncoding
 		return table;
 	}
 
-	public static void main(String[] args) throws IOException
+	public static String encoder (String filename) throws IOException
 	{
 		// the table containing the pattern and corresponding ascii - "a" -> 'a'
 		HashMap<String, Character> table = new HashMap<String, Character>();
@@ -60,5 +60,12 @@ public class lzwEncoding
 		BufferedWriter bw = new BufferedWriter(new FileWriter("lzwEncoded.txt"));
 		bw.write(encoding.toString());
 		bw.close();
+	}
+}
+
+public class lzwTester
+{
+	public static void main (String [] args){
+		BufferedWriter bw1 = new BufferedWriter (new FileWriter)
 	}
 }
