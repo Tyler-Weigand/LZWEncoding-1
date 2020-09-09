@@ -36,10 +36,10 @@ public class lzwEncoding
 		while(current != -1)
 		{
 			current = br.read();
-			// current portion of the text we're dealing with 
+			// current portion of the text being scanned for new patterns
 			String temp = prev + (char)current;
 
-			// new pattern!
+			// creates a new pattern!
 			if(!table.containsKey(temp))
 			{
 				// encode previous
@@ -63,9 +63,3 @@ public class lzwEncoding
 	}
 }
 
-public class lzwTester
-{
-	public static void main (String [] args){
-		BufferedWriter bw1 = new BufferedWriter (new FileWriter)
-	}
-}
