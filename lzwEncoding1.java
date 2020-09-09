@@ -46,9 +46,8 @@ public class lzwEncoding
 				if(encoding.length() > 0)
 					encoding.append(", ");
 				encoding.append(table.get(prev));
-
-				// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
-				//if(num < 256)
+				
+				// add to the table
 				table.put(temp, num);
 
 				num++;
