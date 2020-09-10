@@ -1,4 +1,3 @@
-//submit the link to the github repo
 import java.util.*;
 import java.io.*;
 public class lzwEncoding 
@@ -14,7 +13,7 @@ public class lzwEncoding
 		return table;
 	}
 
-	public static String encoder (String filename) throws IOException
+	public static void encode (String input, String output) 
 	{
 		// the table containing the pattern and corresponding ascii - "a" -> 'a'
 		HashMap<String, Character> table = new HashMap<String, Character>();
@@ -24,42 +23,59 @@ public class lzwEncoding
 		// fill the table with the standard ascii 1-128
 		init(table);
 
-		BufferedReader br = new BufferedReader(new FileReader("lzw.txt"));
-		int current = br.read();
-
-		// last char of previous pattern
-		String prev = (char)current + "";
-
-		// the next available ascii
-		int num = 128;
-
-		while(current != -1)
+		try
 		{
-			current = br.read();
-			// current portion of the text being scanned for new patterns
-			String temp = prev + (char)current;
+			BufferedReader br = new BufferedReader(new FileReader(input));
+			int current = br.read();
 
-			// creates a new pattern!
-			if(!table.containsKey(temp))
+			// last char of previous pattern
+			String prev = (char)current + "";
+
+			// the next available ascii
+			int num = 128;
+
+			while(current != -1)
 			{
-				// encode previous
-				encoding.append(table.get(prev));
+				current = br.read();
+				// current portion of the text being scanned for new patterns
+				String temp = prev + (char)current;
 
-				// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
-				if(num < 256)
-					table.put(temp, (char)num);
+				// pattern not found
+				if(!table.containsKey(temp))
+				{
+					// encode previous
+					encoding.append(table.get(prev));
 
-				num++;
-				// reset bc we've already encoded the previous
-				prev = "";
+					// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
+					// add to the table
+					if(num < 256)
+						table.put(temp, (char)num);
+
+					// increase the next available ascii
+					num++;
+
+					// reset bc we've already encoded the previous
+					prev = "";
+				}
+				// add to or set the previous
+				prev += (char)current;
 			}
-			// add to or set the previous
-			prev += (char)current;
+			br.close();
 		}
-		br.close();
-		BufferedWriter bw = new BufferedWriter(new FileWriter("lzwEncoded.txt"));
-		bw.write(encoding.toString());
-		bw.close();
+		catch(IOException e)
+		{
+			System.out.println("IOException");
+		}
+		try
+		{
+			BufferedWriter bw = new BufferedWriter(new FileWriter(output));
+			// write out the encoding
+			bw.write(encoding.toString());
+			bw.close();
+		}
+		catch(IOException e)
+		{
+			System.out.println("IOException");
+		}
 	}
 }
-
