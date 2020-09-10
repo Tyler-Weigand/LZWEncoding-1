@@ -4,6 +4,7 @@ public class lzwEncoding
 {
 	public static HashMap<String,Character> init(HashMap<String,Character> table)
 	{
+		// fill the table with the standard ascii 1-128
 		for(int a = 0; a < 128; a++)
 		{
 			char current = (char)(a);
@@ -31,7 +32,7 @@ public class lzwEncoding
 			// last char of previous pattern
 			String prev = (char)current + "";
 
-			// the next available ascii
+			// the next available ascii/table slot
 			int num = 128;
 
 			while(current != -1)
@@ -51,7 +52,7 @@ public class lzwEncoding
 					if(num < 256)
 						table.put(temp, (char)num);
 
-					// increase the next available ascii
+					// increase the next available ascii/table slot
 					num++;
 
 					// reset bc we've already encoded the previous
