@@ -12,7 +12,6 @@ public class lzwEncoding
 			table.put(current+"",current);
 		}
 		return table;
-		//hello
 	}
 
 	public static void encode (String input, String output) 
