@@ -48,9 +48,9 @@ public class lzwEncoding
 					// encode previous
 					encoding.append(table.get(prev));
 
-					// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
+					// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255 -- changed to 65536 bc thats the largest char, the larger the table the more it compresses
 					// add to the table
-					if(num < 256)
+					if(num < 65536)
 						table.put(temp, (char)num);
 
 					// increase the next available ascii/table slot
