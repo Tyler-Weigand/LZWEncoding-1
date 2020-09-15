@@ -30,7 +30,11 @@ public class lzwDecoder {
 			}
 			if (encodingtable.containsKey(code)) 
 				pw.print(encodingtable.get(code));
-			
+			else {
+				encodingtable.put(current, encoding + encoding.substring(0, 1));
+				pw.print(encodingtable.get(current));
+				current++;
+			}
 		}
 	}
 }
