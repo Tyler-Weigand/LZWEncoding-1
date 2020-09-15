@@ -36,5 +36,7 @@ public class lzwDecoder {
 				current++;
 			}
 		}
+		pw.close();
+		br.close();
 	}
 }
