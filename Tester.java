@@ -5,6 +5,6 @@ public class Tester {
 		lzwEncoding x = new lzwEncoding();
 		x.encode("big.txt", "encoded");
 		lzwDecoder y = new lzwDecoder();
-		y.decode("output");
+		y.decode("encoded");
 	}
 }
