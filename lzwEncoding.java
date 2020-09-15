@@ -3,10 +3,11 @@ import java.io.*;
 
 public class lzwEncoding 
 {
+	final static int INITIAL_TABLE_SIZE = 128;
 	public static HashMap<String,Character> init(HashMap<String,Character> table)
 	{
 		// fill the table with the standard ascii 1-128
-		for(int a = 0; a < 128; a++)
+		for(int a = 0; a < INITIAL_TABLE_SIZE; a++)
 		{
 			char current = (char)(a);
 			// (pattern (string) + corresponding ascii (char))
@@ -41,7 +42,7 @@ public class lzwEncoding
 			String prev = (char)current + "";
 
 			// the next available ascii/table slot
-			int num = 128;
+			int num = INITIAL_TABLE_SIZE;
 
 			while(current != -1)
 			{
