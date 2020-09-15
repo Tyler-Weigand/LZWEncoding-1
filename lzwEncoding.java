@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+
 public class lzwEncoding 
 {
 	public static HashMap<String,Character> init(HashMap<String,Character> table)
@@ -15,19 +16,25 @@ public class lzwEncoding
 		//hello
 	}
 
-	public static void encode (String input, String output) 
+	public static void encode (String input, String outputFileName) 
 	{
 		// the table containing the pattern and corresponding ascii - "a" -> 'a'
 		HashMap<String, Character> table = new HashMap<String, Character>();
-		// holds the encoded message
-		StringBuilder encoding = new StringBuilder("");
-
+		
 		// fill the table with the standard ascii 1-128
 		init(table);
 
 		try
 		{
 			BufferedReader br = new BufferedReader(new FileReader(input));
+			
+			//prints directly to the outputFile instead of using a stringbuilder so it runs faster
+			File file = new File(outputFileName);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			PrintWriter pw = new PrintWriter(file);
+			
 			int current = br.read();
 
 			// last char of previous pattern
@@ -46,9 +53,12 @@ public class lzwEncoding
 				if(!table.containsKey(temp))
 				{
 					// encode previous
-					encoding.append(table.get(prev));
-
-					// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255 -- changed to 65536 bc thats the largest char, the larger the table the more it compresses
+					//encoding.append(table.get(prev));
+					//prints to output file instead of appending
+					pw.print(table.get(prev));
+					
+					// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
+					//^^ changed to 65536 bc thats the largest char, the larger the table the more it compresses
 					// add to the table
 					if(num < 65536)
 						table.put(temp, (char)num);
@@ -63,17 +73,7 @@ public class lzwEncoding
 				prev += (char)current;
 			}
 			br.close();
-		}
-		catch(IOException e)
-		{
-			System.out.println("IOException");
-		}
-		try
-		{
-			BufferedWriter bw = new BufferedWriter(new FileWriter(output));
-			// write out the encoding
-			bw.write(encoding.toString());
-			bw.close();
+			pw.close();
 		}
 		catch(IOException e)
 		{
