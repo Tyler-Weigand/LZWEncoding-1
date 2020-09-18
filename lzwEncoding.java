@@ -3,7 +3,7 @@ import java.io.*;
 
 public class lzwEncoding 
 {
-	final static int INITIAL_TABLE_SIZE = 128;
+	final static int INITIAL_TABLE_SIZE = 128;//creates a final variable because 128 is a "magic number" that appears multiple times
 	public static HashMap<String,Character> init(HashMap<String,Character> table)
 	{
 		// fill the table with the standard ascii 1-128
