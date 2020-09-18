@@ -34,6 +34,7 @@ public class lzwDecoder {
 				current++;
 				encoding = encoding.substring(encoding.length()-1);
 			}
+			pw.print(encodingtable.get(code));
 		}
 		pw.close();
 		br.close();
