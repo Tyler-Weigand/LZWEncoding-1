@@ -12,11 +12,13 @@ public class lzwDecoder {
 	public void decode(String inputFileName) throws IOException {
 		BufferedReader br = new BufferedReader (new FileReader(inputFileName));
 		HashMap<Integer, String> encodingtable = new HashMap<Integer, String>();
+		HashMap<String, Integer> usedEncodings = new HashMap<String, Integer>(); //List of used encodings, number inside is always equal to 0.
 		PrintWriter pw = new PrintWriter(new File("output"));
 		int current = 0;
 		for(int a = 0; a < 128; a++) {
 			current = a;
 			encodingtable.put(current, ((char)current + ""));
+			usedEncodings.put(((char)current + ""), 0);
 		}
 		int code; //current code
 		current++;
@@ -26,12 +28,14 @@ public class lzwDecoder {
 			if (encodingtable.get(code) == null) {
 				encoding+=(encoding.substring(0, 1));
 				encodingtable.put(current, encoding);
+				usedEncodings.put(encoding, 0);
 				current++;
 			}
 			else
 				encoding+=(encodingtable.get(code));
-			if (!(encodingtable.containsValue(encoding))) {
+			if (!(usedEncodings.containsKey(encoding))) {
 				encodingtable.put(current, encoding);
+				usedEncodings.put(encoding, 0);
 				current++;
 				encoding = (encoding.substring(encoding.length()-1));
 			}
