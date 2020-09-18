@@ -27,7 +27,8 @@ public class lzwDecoder {
 				encodingtable.put(current, encoding);
 				current++;
 			}
-			encoding+=encodingtable.get(code) + "";
+			else
+				encoding+=encodingtable.get(code) + "";
 			if (!(encodingtable.containsValue(encoding))) {
 				encodingtable.put(current, encoding);
 				current++;
