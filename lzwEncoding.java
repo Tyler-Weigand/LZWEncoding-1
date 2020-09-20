@@ -14,7 +14,6 @@ public class lzwEncoding
 			table.put(current+"",current);
 		}
 		return table;
-		//hello
 	}
 
 	public static void encode (String input, String outputFileName) 
@@ -54,14 +53,13 @@ public class lzwEncoding
 				if(!table.containsKey(temp))
 				{
 					// encode previous
-					//encoding.append(table.get(prev));
 					//prints to output file instead of appending
 					pw.print(table.get(prev));
 					
 					// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
-					//^^ changed to 65536 bc thats the largest char, the larger the table the more it compresses
+					//the larger the table the more it compresses, so we increased the max table size to a max of 2^15 (32768) (2^16 created some unreadable chars)
 					// add to the table
-					if(num < 65536)
+					if(num < 32769)
 						table.put(temp, (char)num);
 
 					// increase the next available ascii/table slot
