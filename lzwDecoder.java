@@ -18,7 +18,7 @@ public class lzwDecoder {
 		
 		//First iteration, priming variables to loop
 		int nextValue = INITIAL_TABLE_SIZE;
-		int currentCode = br.read(); //represents the most recent encoded char
+		int currentCode = br.read(); //the char being decoded, represents an encoded string
 		String previousStr = ""; //represents the most recently printed set of chars
 		String currentStr = ""; //represents the set of chars to be printed & added to the hashmap
 		
@@ -44,8 +44,9 @@ public class lzwDecoder {
 				currentStr = previousStr + previousStr.substring(0,1);
 				encodingTable.put(nextValue, currentStr);
 			}
-			pw.print(currentStr);
-
+			pw.print(currentStr);//print the current string
+			
+			//Resets strings to accept the next encoding
 			previousStr = encodingTable.get(currentCode);
 			currentStr = "";
 			nextValue++;
