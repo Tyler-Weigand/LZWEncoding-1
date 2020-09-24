@@ -4,6 +4,8 @@ import java.io.*;
 public class lzwEncoding 
 {
 	final static int INITIAL_TABLE_SIZE = 128;//creates a final variable because 128 is a "magic number" that appears multiple times
+	final static int MAX_TABLE_SIZE = 55296; //the maximum size of our table
+	int[] codeRecency = new int[MAX_TABLE_SIZE];
 	public static HashMap<String,Character> init(HashMap<String,Character> table)
 	{
 		// fill the table with the standard ascii 1-128
@@ -59,7 +61,7 @@ public class lzwEncoding
 					// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
 					//the larger the table the more it compresses, so we increased the max table size to a max of 2^15 (32768) (2^16 created some unreadable chars)
 					// add to the table
-					if(num < 55296)
+					if(num < MAX_TABLE_SIZE)
 						table.put(temp, (char)num);
 
 					// increase the next available ascii/table slot
