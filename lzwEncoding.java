@@ -6,6 +6,7 @@ public class lzwEncoding
 	final static int INITIAL_TABLE_SIZE = 128;//creates a final variable because 128 is a "magic number" that appears multiple times
 	final static int MAX_TABLE_SIZE = 55296; //the maximum size of our table
 	int[] codeRecency = new int[MAX_TABLE_SIZE];
+	Deque<Integer> recentQueue = new Deque<Integer>();
 	public static HashMap<String,Character> init(HashMap<String,Character> table)
 	{
 		// fill the table with the standard ascii 1-128
@@ -22,7 +23,6 @@ public class lzwEncoding
 	{
 		// the table containing the pattern and corresponding ascii - "a" -> 'a'
 		HashMap<String, Character> table = new HashMap<String, Character>();
-		Deque<Integer> recentQueue = new Deque<Integer>();
 		
 		// fill the table with the standard ascii 1-128
 		init(table);
