@@ -20,6 +20,7 @@ public class lzwEncoding
 	{
 		// the table containing the pattern and corresponding ascii - "a" -> 'a'
 		HashMap<String, Character> table = new HashMap<String, Character>();
+		Deque<Integer> recentQueue = new Deque<Integer>();
 		
 		// fill the table with the standard ascii 1-128
 		init(table);
@@ -55,7 +56,7 @@ public class lzwEncoding
 					// encode previous
 					//prints to output file instead of appending
 					pw.print(table.get(prev));
-					
+										
 					// max 256 bc the extended ascii table ends at 255, so we can't represent anything past 255
 					//the larger the table the more it compresses, so we increased the max table size to a max of 2^15 (32768) (2^16 created some unreadable chars)
 					// add to the table
