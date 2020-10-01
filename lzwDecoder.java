@@ -4,6 +4,9 @@ import java.util.*;
 public class lzwDecoder {
 	private HashMap<Integer, String> encodingTable;
 	final static int INITIAL_TABLE_SIZE = 128;
+	final static int MAX_TABLE_SIZE = 55296;
+	static int[] codeRecency = new int[MAX_TABLE_SIZE];
+	static ArrayDeque<CodeNode> recentQueue = new ArrayDeque<CodeNode>();
 	
 	public lzwDecoder() {}
 	
@@ -35,15 +38,46 @@ public class lzwDecoder {
 		nextValue++;
 		
 		while(br.ready()) {
+			CodeNode tempNode = new CodeNode("",'a');
+			if (nextValue >= MAX_TABLE_SIZE) {
+				tempNode = recentQueue.pollFirst();
+				while(codeRecency[(int)tempNode.code] > 1) {
+					codeRecency[tempNode.code]-=1;
+					tempNode = recentQueue.pollFirst();
+				}
+			}
+			if (previousStr.length() > 1){
+				recentQueue.add(new CodeNode(previousStr, (char)currentCode));
+				codeRecency[currentCode]++;
+			}
 			currentCode = br.read();
 			if (encodingTable.containsKey(currentCode)) { //if current code is already in the hashmap, add previous characters + 1st letter of current to hashmap
-				currentStr = encodingTable.get(currentCode);
-				encodingTable.put(nextValue, previousStr + currentStr.substring(0,1));
+				if (nextValue < MAX_TABLE_SIZE) {
+					currentStr = encodingTable.get(currentCode);
+					encodingTable.put(nextValue, previousStr + currentStr.substring(0,1));
+					recentQueue.add(new CodeNode(previousStr + currentStr.substring(0,1), (char)nextValue));
+				} else {
+					currentStr = encodingTable.get(currentCode);
+					encodingTable.remove(new Integer((int)tempNode.code));
+					encodingTable.put(new Integer((int)tempNode.code), previousStr + currentStr.substring(0,1));
+					recentQueue.add(new CodeNode(previousStr + currentStr.substring(0,1), tempNode.code));
+
+				}
 			} 
 			else { //otherwise, add the previous string + its first letter
-				currentStr = previousStr + previousStr.substring(0,1);
-				encodingTable.put(nextValue, currentStr);
+				if (nextValue < MAX_TABLE_SIZE) {
+					currentStr = previousStr + previousStr.substring(0,1);
+					encodingTable.put(nextValue, currentStr);
+					recentQueue.add(new CodeNode(currentStr, (char)nextValue));
+				} else {
+					currentStr = previousStr + previousStr.substring(0,1);
+					encodingTable.remove(new Integer((int)tempNode.code));
+					encodingTable.put(new Integer((int)tempNode.code), currentStr);
+					recentQueue.add(new CodeNode(currentStr, tempNode.code));
+				}
 			}
+
+
 			pw.print(currentStr);//print the current string
 			
 			//Resets strings to accept the next encoding
