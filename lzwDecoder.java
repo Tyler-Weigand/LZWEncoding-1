@@ -4,7 +4,7 @@ import java.util.*;
 public class lzwDecoder {
 	private HashMap<Integer, String> encodingTable;
 	final static int INITIAL_TABLE_SIZE = 128;
-	final static int MAX_TABLE_SIZE = 55296;
+	final static int MAX_TABLE_SIZE = 55296; //the maximum size of our table
 	static int[] codeRecency = new int[MAX_TABLE_SIZE];
 	static ArrayDeque<CodeNode> recentQueue = new ArrayDeque<CodeNode>();
 	
