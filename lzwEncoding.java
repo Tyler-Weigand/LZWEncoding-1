@@ -64,21 +64,26 @@ public class lzwEncoding
 					//the larger the table the more it compresses, so we increased the max table size to a max of 2^15 (32768) (2^16 created some unreadable chars)
 					// add to the table
 					if(num < MAX_TABLE_SIZE) {
-						recentQueue.add(new CodeNode(prev, table.get(prev)));
-						codeRecency[(int)(table.get(prev)).charValue()]++;
+						if(prev.length() > 1){
+							recentQueue.add(new CodeNode(prev, table.get(prev)));
+							codeRecency[(int)(table.get(prev)).charValue()]++;
+						}
 						table.put(temp, (char)num);
+						recentQueue.add(new CodeNode(temp, (char)num));
 					}
 					else {
 						CodeNode tempNode = recentQueue.pollFirst();
-						System.out.println((int)tempNode.code);
-						while(codeRecency[tempNode.code] > 1) {
+						while(codeRecency[(int)tempNode.code] > 1) {
 							codeRecency[tempNode.code]-=1;
 							tempNode = recentQueue.pollFirst();
 						}
-						recentQueue.add(new CodeNode(prev, table.get(prev)));
-						codeRecency[(int)(table.get(prev)).charValue()]++;
+						if(prev.length() > 1) {
+							recentQueue.add(new CodeNode(prev, table.get(prev)));
+							codeRecency[(int)(table.get(prev)).charValue()]++;
+						}
 						table.remove(tempNode.key);
 						table.put(temp, tempNode.code);
+						recentQueue.add(new CodeNode(temp, tempNode.code));
 					}
 
 					// increase the next available ascii/table slot
